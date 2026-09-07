@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f766e">
+<title>Lavanderia Pro</title>
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- TELA DE LOGIN -->
+<div id="tela-login" class="tela">
+  <div class="login-card">
+    <div class="logo">🧼</div>
+    <h1>Lavanderia Pro</h1>
+    <p class="sub">Gestão de restauração e higienização de tênis, bolsas e bonés</p>
+
+    <div id="area-cadastro" class="hidden">
+      <p class="aviso">Primeiro acesso: crie o login da empresa.</p>
+      <input id="cad-nome" type="text" placeholder="Nome da empresa" autocomplete="off">
+      <input id="cad-senha" type="password" placeholder="Crie uma senha" autocomplete="off">
+      <button class="btn-primario" onclick="cadastrarEmpresa()">Criar acesso</button>
+    </div>
+
+    <div id="area-login">
+      <input id="login-nome" type="text" placeholder="Nome" autocomplete="off">
+      <input id="login-senha" type="password" placeholder="Senha" autocomplete="off">
+      <button class="btn-primario" onclick="fazerLogin()">Entrar</button>
+      <p id="erro-login" class="erro hidden"></p>
+    </div>
+  </div>
+</div>
+
+<!-- APP PRINCIPAL -->
+<div id="tela-app" class="tela hidden">
+  <header class="topo">
+    <div class="topo-esq">
+      <span class="logo-pequeno">🧼</span>
+      <div>
+        <strong>Lavanderia Pro</strong>
+        <div class="topo-sub">Controle da empresa</div>
+      </div>
+    </div>
+    <button class="btn-icone" onclick="abrirMenu()">☰</button>
+  </header>
+
+  <div id="menu-lateral" class="menu-lateral hidden">
+    <button onclick="fecharMenu()" class="fechar-menu">✕</button>
+    <p class="menu-item-aviso">Dados salvos neste aparelho.<br>Faça backup regularmente.</p>
+    <button class="btn-secundario" onclick="exportarBackup()">⬇️ Exportar backup</button>
+    <button class="btn-secundario" onclick="document.getElementById('input-backup').click()">⬆️ Importar backup</button>
+    <input type="file" id="input-backup" accept="application/json" class="hidden" onchange="importarBackup(event)">
+    <button class="btn-instalar" id="btn-instalar" style="display:none" onclick="instalarApp()">＋ Instalar aplicativo</button>
+    <button class="btn-sair" onclick="sair()">Sair</button>
+  </div>
+
+  <main class="conteudo">
+
+    <!-- PAINEL -->
+    <section id="secao-painel" class="secao">
+      <div class="secao-topo">
+        <h2>Painel</h2>
+        <button class="btn-primario btn-pequeno" onclick="abrirModalOS()">+ Nova OS</button>
+      </div>
+      <div class="cards-resumo">
+        <div class="card"><span class="card-num" id="num-total">0</span><span class="card-label">Total de OS</span></div>
+        <div class="card"><span class="card-num" id="num-pendente">0</span><span class="card-label">Pendentes</span></div>
+        <div class="card"><span class="card-num" id="num-andamento">0</span><span class="card-label">Em andamento</span></div>
+        <div class="card"><span class="card-num" id="num-concluido">0</span><span class="card-label">Concluídas</span></div>
+      </div>
+      <div id="alerta-estoque" class="alerta hidden"></div>
+      <h3 class="subtitulo">Últimas ordens de serviço</h3>
+      <div id="lista-recentes"></div>
+    </section>
+
+    <!-- ORDENS DE SERVIÇO -->
+    <section id="secao-os" class="secao hidden">
+      <div class="secao-topo">
+        <h2>Ordens de serviço</h2>
+        <button class="btn-primario btn-pequeno" onclick="abrirModalOS()">+ Nova OS</button>
+      </div>
+      <div class="filtros">
+        <select id="filtro-status" onchange="renderOS()">
+          <option value="">Todos os status</option>
+          <option value="Pendente">Pendente</option>
+          <option value="Em andamento">Em andamento</option>
+          <option value="Concluído">Concluído</option>
+          <option value="Entregue">Entregue</option>
+        </select>
+      </div>
+      <div id="lista-os"></div>
+    </section>
+
+    <!-- CLIENTES -->
+    <section id="secao-clientes" class="secao hidden">
+      <div class="secao-topo">
+        <h2>Clientes</h2>
+        <button class="btn-primario btn-pequeno" onclick="abrirModalCliente()">+ Novo cliente</button>
+      </div>
+      <div id="lista-clientes"></div>
+    </section>
+
+    <!-- ESTOQUE -->
+    <section id="secao-estoque" class="secao hidden">
+      <div class="secao-topo">
+        <h2>Estoque</h2>
+        <button class="btn-primario btn-pequeno" onclick="abrirModalEstoque()">+ Novo item</button>
+      </div>
+      <div id="lista-estoque"></div>
+    </section>
+
+  </main>
+
+  <nav class="tab-bar">
+    <button class="tab-item ativo" data-secao="painel" onclick="mudarAba('painel')">
+      <span>📊</span><small>Painel</small>
+    </button>
+    <button class="tab-item" data-secao="os" onclick="mudarAba('os')">
+      <span>📋</span><small>Ordens</small>
+    </button>
+    <button class="tab-item" data-secao="clientes" onclick="mudarAba('clientes')">
+      <span>👥</span><small>Clientes</small>
+    </button>
+    <button class="tab-item" data-secao="estoque" onclick="mudarAba('estoque')">
+      <span>📦</span><small>Estoque</small>
+    </button>
+  </nav>
+</div>
+
+<!-- MODAL GENÉRICO -->
+<div id="modal-fundo" class="modal-fundo hidden" onclick="fecharModalFora(event)">
+  <div class="modal-caixa" id="modal-caixa"></div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
