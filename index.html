@@ -7,11 +7,13 @@
 <title>Lavanderia Pro</title>
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Lavanderia Pro">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-<!-- TELA DE LOGIN -->
 <div id="tela-login" class="tela">
   <div class="login-card">
     <div class="logo">🧼</div>
@@ -21,20 +23,21 @@
     <div id="area-cadastro" class="hidden">
       <p class="aviso">Primeiro acesso: crie o login da empresa.</p>
       <input id="cad-nome" type="text" placeholder="Nome da empresa" autocomplete="off">
-      <input id="cad-senha" type="password" placeholder="Crie uma senha" autocomplete="off">
+      <input id="cad-senha" type="password" placeholder="Crie uma senha (mín. 6 caracteres)" autocomplete="off">
       <button class="btn-primario" onclick="cadastrarEmpresa()">Criar acesso</button>
+      <p class="troca-tela"><a href="#" onclick="mostrarLogin(); return false;">Já tenho acesso, entrar</a></p>
     </div>
 
     <div id="area-login">
-      <input id="login-nome" type="text" placeholder="Nome" autocomplete="off">
+      <input id="login-nome" type="text" placeholder="Nome da empresa" autocomplete="off">
       <input id="login-senha" type="password" placeholder="Senha" autocomplete="off">
       <button class="btn-primario" onclick="fazerLogin()">Entrar</button>
       <p id="erro-login" class="erro hidden"></p>
+      <p class="troca-tela"><a href="#" onclick="mostrarCadastro(); return false;">Primeiro acesso? Criar acesso da empresa</a></p>
     </div>
   </div>
 </div>
 
-<!-- APP PRINCIPAL -->
 <div id="tela-app" class="tela hidden">
   <header class="topo">
     <div class="topo-esq">
@@ -49,7 +52,7 @@
 
   <div id="menu-lateral" class="menu-lateral hidden">
     <button onclick="fecharMenu()" class="fechar-menu">✕</button>
-    <p class="menu-item-aviso">Dados salvos neste aparelho.<br>Faça backup regularmente.</p>
+    <p class="menu-item-aviso">Dados salvos na nuvem.<br>Faça backup regularmente.</p>
     <button class="btn-secundario" onclick="exportarBackup()">⬇️ Exportar backup</button>
     <button class="btn-secundario" onclick="document.getElementById('input-backup').click()">⬆️ Importar backup</button>
     <input type="file" id="input-backup" accept="application/json" class="hidden" onchange="importarBackup(event)">
@@ -59,7 +62,6 @@
 
   <main class="conteudo">
 
-    <!-- PAINEL -->
     <section id="secao-painel" class="secao">
       <div class="secao-topo">
         <h2>Painel</h2>
@@ -76,7 +78,6 @@
       <div id="lista-recentes"></div>
     </section>
 
-    <!-- ORDENS DE SERVIÇO -->
     <section id="secao-os" class="secao hidden">
       <div class="secao-topo">
         <h2>Ordens de serviço</h2>
@@ -94,7 +95,6 @@
       <div id="lista-os"></div>
     </section>
 
-    <!-- CLIENTES -->
     <section id="secao-clientes" class="secao hidden">
       <div class="secao-topo">
         <h2>Clientes</h2>
@@ -103,7 +103,6 @@
       <div id="lista-clientes"></div>
     </section>
 
-    <!-- ESTOQUE -->
     <section id="secao-estoque" class="secao hidden">
       <div class="secao-topo">
         <h2>Estoque</h2>
@@ -130,26 +129,14 @@
   </nav>
 </div>
 
-<!-- MODAL GENÉRICO -->
-<div id="area-cadastro" class="hidden">
-  <p class="aviso">Primeiro acesso: crie o login da empresa.</p>
-  <input id="cad-nome" type="text" placeholder="Nome da empresa" autocomplete="off">
-  <input id="cad-senha" type="password" placeholder="Crie uma senha (mín. 6 caracteres)" autocomplete="off">
-  <button class="btn-primario" onclick="cadastrarEmpresa()">Criar acesso</button>
-  <p class="troca-tela"><a href="#" onclick="mostrarLogin(); return false;">Já tenho acesso, entrar</a></p>
+<div id="modal-fundo" class="modal-fundo hidden" onclick="fecharModalFora(event)">
+  <div class="modal-caixa" id="modal-caixa"></div>
 </div>
 
-<div id="area-login">
-  <input id="login-nome" type="text" placeholder="Nome da empresa" autocomplete="off">
-  <input id="login-senha" type="password" placeholder="Senha" autocomplete="off">
-  <button class="btn-primario" onclick="fazerLogin()">Entrar</button>
-  <p id="erro-login" class="erro hidden"></p>
-  <p class="troca-tela"><a href="#" onclick="mostrarCadastro(); return false;">Primeiro acesso? Criar acesso da empresa</a></p>
-</div>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-<script src="firebase-config.js"></script>
+<script src="firebaseconfig.js"></script>
 <script src="app.js"></script>
 </body>
 </html>
